@@ -1,0 +1,16 @@
+---
+credentials:
+  username: "username"
+  password: "password"
+  pin: "1234"
+  questions:
+    16:
+      question: "Question #1"
+      answer: "Answer #1"
+    26:
+      question: "Question #2"
+      answer: "Answer #2"
+    36:
+      question: "Question #3"
+      answer: "Answer #3"
+log_level: "info"
