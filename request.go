@@ -12,7 +12,6 @@ type Request struct {
 	urlPathCancel  string
 	body           map[string]string
 	client         *Client
-
 }
 
 // StartEngine method
@@ -43,7 +42,7 @@ func (req *Request) Lock() []byte {
 	req.setPIN()
 	req.setNow()
 	req.body["delay"] = "0"
-	req.body["unlockDoorType"] = "FRONT_LEFT_DOOR_CMD"                    // FRONT_LEFT_DOOR_CMD | ALL
+	req.body["unlockDoorType"] = "FRONT_LEFT_DOOR_CMD" // FRONT_LEFT_DOOR_CMD | ALL
 	req.urlPathExecute = "/service/g2/lock/execute.json"
 	req.urlPathStatus = "/service/g2/remoteService/status.json"
 	req.urlPathCancel = "/service/g2/lock/cancel.json"
@@ -56,7 +55,7 @@ func (req *Request) Unlock() []byte {
 	req.setPIN()
 	req.setNow()
 	req.body["delay"] = "0"
-	req.body["unlockDoorType"] = "FRONT_LEFT_DOOR_CMD"                    // FRONT_LEFT_DOOR_CMD | ALL
+	req.body["unlockDoorType"] = "FRONT_LEFT_DOOR_CMD" // FRONT_LEFT_DOOR_CMD | ALL
 	req.urlPathExecute = "/service/g2/unlock/execute.json"
 	req.urlPathStatus = "/service/g2/remoteService/status.json"
 	req.urlPathCancel = "/service/g2/unlock/cancel.json"
@@ -64,7 +63,7 @@ func (req *Request) Unlock() []byte {
 	return req.client.execute(req)
 }
 
-// StartLighHorn method
+// StartLightHorn method
 func (req *Request) StartLightHorn() []byte {
 	req.setPIN()
 	req.setNow()
@@ -108,6 +107,7 @@ func (req *Request) GetHealth() []byte {
 	return req.client.execute(req)
 }
 
+// GetClimateSettings method
 func (req *Request) GetClimateSettings() []byte {
 	req.setPIN()
 	req.setNow()
