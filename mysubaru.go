@@ -1,10 +1,14 @@
 package mysubaru
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"os"
+	"strconv"
 	"time"
 
+	"github.com/Jeffail/gabs/v2"
 	"github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -66,10 +70,21 @@ func New() (*Client, error) {
 	httpClient := resty.New()
 	httpClient.SetHostURL("https://www.mysubaru.com")
 	httpClient.R().Get("/")
+
 	httpClient.R().SetFormData(map[string]string{"username": viper.GetString("credentials.username"), "password": viper.GetString("credentials.password")}).Post("/login")
 	resp, _ := httpClient.R().SetQueryString("now=" + timestamp()).Get("/profile/getSecurityQuestion.json")
-	log.Debugf(string(resp.Body()))
-	resp, _ = httpClient.R().SetFormData(map[string]string{"questionId": "16", "answer": viper.GetString("credentials.questions.16.answer"), "deviceId": timestamp(), "deviceName": "My App"}).Post("/account/securityAnswer.json")
+
+	dec := json.NewDecoder(bytes.NewReader(resp.Body()))
+	dec.UseNumber()
+	respParsed, err := gabs.ParseJSONDecoder(dec)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+
+	intI64, _ := respParsed.Search("challengeQuestionKey").Data().(json.Number).Int64()
+	intSTR := strconv.FormatInt(intI64, 10)
+
+	resp, _ = httpClient.R().SetFormData(map[string]string{"questionId": intSTR, "answer": viper.GetString("credentials.questions." + intSTR + ".answer"), "deviceId": timestamp(), "deviceName": "My App"}).Post("/account/securityAnswer.json")
 	log.Debugf(string(resp.Body()))
 	if string(resp.Body()) != "true" {
 		return nil, errors.New("Not Authorized! Please check your credentials ")
