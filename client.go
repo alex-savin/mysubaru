@@ -3,9 +3,9 @@ package mysubaru
 import (
 	"time"
 
-	"github.com/Jeffail/gabs"
-	log "github.com/sirupsen/logrus"
+	"github.com/Jeffail/gabs/v2"
 	"github.com/go-resty/resty/v2"
+	log "github.com/sirupsen/logrus"
 )
 
 // Client is a struct
@@ -15,15 +15,15 @@ type Client struct {
 
 // R method creates a new Request instances to be use lates while the firing a request with client
 func (c *Client) R() *Request {
-    req := &Request{
-	body: map[string]string{},
-	client: c,
-    }
-    return req
+	req := &Request{
+		body:   map[string]string{},
+		client: c,
+	}
+	return req
 }
 
 // Exec method executes a Client instance with the Request
-func (c *Client) execute(req *Request) ([]byte) {
+func (c *Client) execute(req *Request) []byte {
 	defer timeTrack(time.Now(), "Executing")
 
 	resp, _ := c.httpClient.R().SetFormData(req.body).Post(req.urlPathExecute)
