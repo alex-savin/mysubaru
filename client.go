@@ -45,10 +45,10 @@ func (c *Client) execute(req *Request) []byte {
 			log.Debugf("%+v", jsonParsed)
 
 			if success, _ := jsonParsed.Path("data.success").Data().(bool); success == true {
+				return resp.Body()
 				break
 			}
 		}
 	}
-
 	return resp.Body()
 }

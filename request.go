@@ -47,7 +47,11 @@ func (req *Request) Lock() []byte {
 	req.urlPathStatus = "/service/g2/remoteService/status.json"
 	req.urlPathCancel = "/service/g2/lock/cancel.json"
 
-	return req.client.execute(req)
+	resp := req.client.execute(req)
+	res := Response{}
+	res.Parse(resp)
+
+	return resp
 }
 
 // Unlock method
@@ -60,7 +64,11 @@ func (req *Request) Unlock() []byte {
 	req.urlPathStatus = "/service/g2/remoteService/status.json"
 	req.urlPathCancel = "/service/g2/unlock/cancel.json"
 
-	return req.client.execute(req)
+	resp := req.client.execute(req)
+	res := Response{}
+	res.Parse(resp)
+
+	return resp
 }
 
 // StartLightHorn method
@@ -68,7 +76,7 @@ func (req *Request) StartLightHorn() []byte {
 	req.setPIN()
 	req.setNow()
 	req.body["delay"] = "0"
-	req.body["horn"] = "true"
+	req.body["horn"] = "false"
 	req.urlPathExecute = "/service/g2/hornlight/execute.json"
 	req.urlPathStatus = "/service/g2/remoteService/status.json"
 	req.urlPathCancel = "/service/g2/hornlight/cancel.json"
@@ -94,7 +102,11 @@ func (req *Request) GetLocation() []byte {
 	req.urlPathExecute = "/service/g2/refreshVehicleStatus/execute.json"
 	req.urlPathStatus = "/service/g2/locate/execute.json"
 
-	return req.client.execute(req)
+	resp := req.client.execute(req)
+	res := Response{}
+	res.Parse(resp)
+
+	return resp
 }
 
 // GetHealth method
@@ -104,7 +116,11 @@ func (req *Request) GetHealth() []byte {
 	req.urlPathExecute = "/service/g2/remoteHealth/execute.json"
 	req.urlPathStatus = "/service/g2/remoteHealth/status.json"
 
-	return req.client.execute(req)
+	resp := req.client.execute(req)
+	res := Response{}
+	res.Parse(resp)
+
+	return resp
 }
 
 // GetClimateSettings method
@@ -115,12 +131,6 @@ func (req *Request) GetClimateSettings() []byte {
 
 	return req.client.execute(req)
 }
-
-// Exec is a method
-//func (req *Request) Exec() ([]byte) {
-//	resp := req.client.execute(req)
-//	return resp
-//}
 
 func (req *Request) setClimatParams() {
 	req.body["delay"] = "0"
