@@ -1,4 +1,4 @@
-module github.com/alex-savin/golang-tmp3
+module github.com/alex-savin/mysubaru
 
 go 1.14
 
