@@ -46,7 +46,6 @@ func (c *Client) execute(req *Request) []byte {
 
 			if success, _ := jsonParsed.Path("data.success").Data().(bool); success == true {
 				return resp.Body()
-				break
 			}
 		}
 	}
