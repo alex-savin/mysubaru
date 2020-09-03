@@ -28,3 +28,5 @@ coverage.txt
 go.sum
 
 hassky.code-workspace
+
+.tmp
